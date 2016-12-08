@@ -9,7 +9,7 @@ export default class Layout extends React.Component {
         <header>
           <Link to="/">Earl Catcher</Link>
         </header>
-        <div className="app-content">This is App Content</div>
+        <div className="app-content">{this.props.children}</div>
         <footer>
           <small>copyright 2016 | By Leaf</small>
         </footer>

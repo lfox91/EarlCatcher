@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www  --exec babel-node --presets latest reacte"
+    "start": "nodemon ./bin/www  --exec babel-node --presets latest react"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
@@ -23,6 +23,7 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",
+    "babel-loader": "6.2.9",
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "webpack": "^1.13.3",

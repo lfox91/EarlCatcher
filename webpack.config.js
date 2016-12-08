@@ -1,5 +1,5 @@
-import webpack from 'webpack'
-import path from 'path'
+const webpack = require('webpack');
+const path = require('path'); 
 
 module.exports = {
   context: path.resolve(__dirname, "src"),

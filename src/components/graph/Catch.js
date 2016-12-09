@@ -1,11 +1,14 @@
 import React from 'react';
-import Link from 'react-router';
+import NavLink from '../NavLink';
 
 export default class Catch extends React.Component{
   render(){
+    console.log(this.props.children)
     return(
       <div>
-        <Link {...this.props} activeClassName="active">Catch It</Link>
+        <p>Generating your graph...</p>
+        <p><em>This may take a while</em></p>
+        {this.props.children}
       </div>
     );
   }

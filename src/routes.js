@@ -1,16 +1,16 @@
 import React from 'react';
 import { Route, IndexRoute, browserHistory } from 'react-router';
 import Layout from './components/Layout';
-import Index from './components/Index';
+import Home from './components/Home';
 import Catch from './components/graph/Catch';
 import Graph from './components/graph/Graph';
-import Oops from './components/404';
+import Oops from './components/Oops';
 
 const routes = (
   <Route path="/" component={Layout}>
-    <IndexRoute component={Index}/>
+    <IndexRoute component={Home}/>
     <Route path="/catch" component={Catch}/>
-      <IndexRoute component={Graph}/>
+      <Route component={Graph}/>
     <Route path="*" component={Oops}/>
   </Route>
 );

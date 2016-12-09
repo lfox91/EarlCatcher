@@ -1,5 +1,5 @@
 const webpack = require('webpack');
-const path = require('path'); 
+const path = require('path');
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
@@ -25,10 +25,10 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: true},
-      mangle: true,
-      sourcemap: false,
-      beautify: false,
+      compress: {warnings: false},
+      mangle: false,
+      sourcemap: true,
+      beautify: true,
       dead_code: true
     })
   ]

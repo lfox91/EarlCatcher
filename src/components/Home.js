@@ -2,10 +2,12 @@ import React from 'react';
 import NavLink from './NavLink';
 
 export default class Home extends React.Component {
-
-  getValue () => {
-    let input = document.getElementByTagName('input')[0]
-    this.props.value = input.value
+  // constructor(props){
+  //   super(props);
+  //   this.state = { url: '' };
+  // }
+  getValue (e) {
+    this.setState({url : e.target.value });
   }
   render(){
     return(
@@ -16,7 +18,9 @@ export default class Home extends React.Component {
           <input type="text"></input>
           <label>Enter your URL</label>
         </form>
-        <div><NavLink to="/catch">Catch Earl!!!</NavLink></div>
+        <div>
+          <NavLink onClick={this.getValue} to="/catch">Catch Earl!!!</NavLink>
+        </div>
       </div>
     );
   }

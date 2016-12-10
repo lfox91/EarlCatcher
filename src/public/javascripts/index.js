@@ -4,8 +4,8 @@ window.onload = function(){
   let httpsBtn = document.getElementById('https');
 
   const updateInput =  (e) => {
-    console.log(e);
-    console.log(e.target + ":" + e.target.id);
+    // console.log(e);
+    // console.log(e.target + ":" + e.target.id);
     input.value = e.target.id+'://';
   }
   httpBtn.onclick = updateInput;

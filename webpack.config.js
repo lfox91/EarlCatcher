@@ -10,8 +10,9 @@ module.exports = {
   },
   module: {
     loaders: [{
-      test: path.join(__dirname, 'src'),
-      loader: ['babel-loader'],
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: 'babel-loader',
       query: {
         cacheDirectory: 'babel_cache',
         presets: ['react', 'latest']
@@ -25,11 +26,10 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
-      compress: {warnings: false},
+      compress: { warnings: true },
       mangle: false,
       sourcemap: true,
-      beautify: true,
-      dead_code: true
+      beautify: false
     })
   ]
 };

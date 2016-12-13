@@ -5,21 +5,22 @@ import NavLink from './NavLink';
 export default class Layout extends React.Component {
   constructor(){
     super();
-
-    this.state = {url:""}
+    // this.state = {url:""}
   }
   render(){
+    console.log("Layout", this.props.children);
     return (
       <div className="app-containter">
-        This is App Container
         <header>
             <h1>Earl Catcher</h1>
-            <NavLink to="/" onlyActiveOnIndex={true}>EC</NavLink>
+            <NavLink to="/" onlyActiveOnIndex={true}>Home</NavLink>
         </header>
         <hr/>
-        <div className="app-content">{this.props.children}</div>
+        <div className="app-content">
+          {this.props.children}
+        </div>
         <footer>
-          <small>copyright 2016 | By Leaf</small>
+          <small>copyright &copy; 2016 | By Leaf</small>
         </footer>
       </div>
     );

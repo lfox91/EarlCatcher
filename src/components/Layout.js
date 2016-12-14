@@ -5,7 +5,7 @@ import NavLink from './NavLink';
 export default class Layout extends React.Component {
   constructor(){
     super();
-    // this.state = {url:""}
+    this.state = {url:""}
   }
   render(){
     console.log("Layout", this.props.children);
@@ -13,7 +13,7 @@ export default class Layout extends React.Component {
       <div className="app-containter">
         <header>
             <h1>Earl Catcher</h1>
-            <NavLink to="/" onlyActiveOnIndex={true}>Home</NavLink>
+            <NavLink to={{pathname:"/", state: this.state.url}} onlyActiveOnIndex={true}>Home</NavLink>
         </header>
         <hr/>
         <div className="app-content">

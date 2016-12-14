@@ -9,7 +9,7 @@ import Oops from './components/Oops';
 const routes = (
   <Route path="/" component={Layout}>
     <IndexRoute component={Home}/>
-    <Route path="/catch" component={Catch}/>
+    <Route path="catch" component={Catch}/>
     {/*<Route path="/catch" component={Graph}/>*/}
     <Route path="*" component={Oops}/>
   </Route>

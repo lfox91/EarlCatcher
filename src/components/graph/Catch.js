@@ -7,6 +7,7 @@ export default class Catch extends React.Component{
 
   componentDidMount() {
     //Asynchronous ish!
+    console.log("I'm in CDM in catch");
     request(this.props.url, function(error,response,body){
       if(!error && response.statusCode == 200){
         console.log(body)

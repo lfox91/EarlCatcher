@@ -11,8 +11,9 @@ export default class Home extends React.Component {
     console.log(this.getValue+"\n", "URL|TPU"+this.url+'\n', this.updateURL);
     return(
       <div>
-        <form>
-          <input onChange={this.props.updateURL} type="text"></input>
+        <form onSubmit={this.props.onCatch}>
+          <input onChange={this.props.updateURL} type="text"/>
+          <br/>
           <label>Enter your URL</label>
         </form>
         <div>

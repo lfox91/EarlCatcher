@@ -14,13 +14,16 @@ export default class Layout extends React.Component {
     this.url = e.target.value ;
   }
   onCatch(){
+    //Submit form
+    //form.submit();
     this.setState({
       url: this.url
     });
+
   }
 
   render(){
-    console.log("Layout", this.props.children);
+    {/*console.log("Layout", this.props.children);*/}
     return (
       <div className="app-containter">
         <header>

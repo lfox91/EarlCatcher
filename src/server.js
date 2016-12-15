@@ -31,6 +31,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(compression());
 
+
 app.get('*', (req, res) => {
   debug(process.env.NODE_ENV);
   match(
@@ -51,6 +52,10 @@ app.get('*', (req, res) => {
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
+        if(renderProps.routes.path == 'caught'){
+          console.log(JSON.stringify(renderProps, null, 2))
+        }
+        console.log("**************************************\n %s ******************************************\n", JSON.stringify(renderProps, null, 2));
         markup = renderToString(<RouterContext {...renderProps}/>);
       } else {
         // otherwise we can render a 404 page

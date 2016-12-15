@@ -17,7 +17,17 @@ module.exports = {
         cacheDirectory: 'babel_cache',
         presets: ['react', 'latest']
       }
+    },
+    {
+      test:/\.json$/,
+      loader: 'json'
     }]
+  },
+  externals: {
+    fs: '{}',
+    tls: '{}',
+    net: '{}',
+    console: '{}'
   },
   plugins: [
     new webpack.DefinePlugin({

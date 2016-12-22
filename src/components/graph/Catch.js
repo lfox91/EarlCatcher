@@ -5,18 +5,25 @@ import request from 'request';
 
 export default class Catch extends React.Component{
 
-   componentDidMount() {
+  componentDidMount() {
      //Asynchronous ish!
-    let postInputUrl = new XMLHttpRequest();
-    postInputUrl.open("POST", "/catch");
-    postInputUrl.send(this.props.url);
-    postInputUrl.onreadystatechange = this.handlePostRes(postInputUrl)
-     console.log(`Home updated @ ${Date.now().toString()}`);
+    console.log("In cdm of Catch");
+    var postInputUrl = new XMLHttpRequest();
+    console.log(JSON.stringify(postInputUrl, null, 2));
+    postInputUrl.onerror = function(err){ console.log(err);}
+    postInputUrl.onloadend = this.handlePostRes(postInputUrl);
+    postInputUrl.open("POST", "/catch", true);
+    postInputUrl.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    postInputUrl.send("url="+this.props.url);
+
+    let now = new Date();
+    console.log(`Home updated @ ${now.toUTCString()}`);
 
   }
   handlePostRes(postInputUrl){
     //Call a function when the state changes.
-    if(postInputUrl.readyState == XMLHttpRequest.DONE && postInputUrl.status == 200) {
+    console.log("handlePostRes is running", postInputUrl.readyState);
+    if(postInputUrl.status == 200) {
         // Request finished. Do processing here.
         console.log("Post Response Successful", postInputUrl.response);
         browserHistory.push('graph');
@@ -27,12 +34,12 @@ export default class Catch extends React.Component{
     return urlStr;
   }
   render(){
-    console.log("Catch", this.props.url)
+
     return(
       <div>
         <p>Generating your graph...</p>
         <p><em>This may take a while</em></p>
-        Location State: { this.cleanURL(this.props.url) }
+        State.URL: { this.cleanURL(this.props.url) }
 
       </div>
     );

@@ -31,7 +31,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(compression());
 
-
+app.post('/catch', (req, res, next)=>{
+  console.log("In catch post", req.body);
+  res.send(JSON.stringify(req.body));
+});
 app.get('*', (req, res) => {
   debug(process.env.NODE_ENV);
   match(

@@ -3,12 +3,11 @@ import NavLink from './NavLink';
 
 export default class Home extends React.Component {
 
-  constructor(props){
-    super(props);
-  }
+  // constructor(props){
+  //   super(props);
+  // }
 
   render(){
-    console.log(this.getValue+"\n", "URL|TPU"+this.url+'\n', this.updateURL);
     return(
       <div>
         <form onSubmit={this.props.onCatch}>

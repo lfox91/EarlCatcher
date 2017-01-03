@@ -6,7 +6,7 @@ import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import compression from 'compression';
-import router from './server/router'
+import router from './server/router';
 
 // http://redux.js.org/docs/recipes/ServerRendering.html
 

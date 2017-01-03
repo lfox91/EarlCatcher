@@ -11,7 +11,7 @@ const routes = (
     <IndexRoute component={Home}/>
     <Route path="catch" component={Catch}/>
     {/*<Route path="/catch" component={Graph}/>*/}
-    <Route path="graph" component={Graph}/>
+    {/*<Route path="graph" component={Graph}/>*/}
     <Route path="*" component={Oops}/>
   </Route>
 );

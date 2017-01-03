@@ -5,27 +5,36 @@ import request from 'request';
 
 
 export default class Catch extends React.Component{
-
+  constructor(props){
+    super(props);
+    this.waitingMessage = this.waitingMessage.bind(this);
+    this.graph = this.graph.bind(this);
+    this.links;
+    this.update;
+  }
   componentDidMount() {
     //Asynchronous code!
     //After component is written to DOM post url to our server
-    request.post('http://localhost:3000/catch', {form: {url:this.props.url}},
+    let that =this;
+    let url = this.cleanURL(this.props.url)//make this happen sooer
+    request.post('http://localhost:3000/catch', {form: {url:url}},
       function (err, res, body){
         if(err)console.log(err);
         // If there is no error we change our location to /graph
-        else browserHistory.push('graph')
-        console.log('Upload successful!  Server responded with:', body);
+        else{
+          body = JSON.parse(body);
+          that.links = body.links;
+          that.links = body.links.map((link, i) =>
+            <li key={i.toString()}>{link}</li>
+          );
+          that.setState({
+            postedURL: true
+          });
+        }
+
     });
   }
-
-
-  cleanURL(urlStr){
-    //this function will make sure url is cleanURL
-    // TODO: make this func
-    return urlStr;
-  }
-  render(){
-
+  waitingMessage(){
     return(
       <div>
         {/*Should display while waiting for response from server*/}
@@ -35,5 +44,35 @@ export default class Catch extends React.Component{
 
       </div>
     );
+  }
+  graph(){
+    console.log(this.links)
+    return(
+      <div style={{border: '1px solid orange', width:'100%', color:'rgb(17, 40, 55)'}}>
+        <h2>This is graph content</h2>
+        <ul>{this.links}</ul>
+      </div>
+    )
+  }
+  componentWillUpdate(nextProps, nextState) {
+    if(this.props.postedUrl){
+      this.update = this.waitingMessage();
+    } else {
+      this.update = this.graph();
+    }
+  }
+  cleanURL(urlStr){
+    //this function will make sure url is cleanURL
+    // TODO: make this func
+
+    return urlStr;
+  }
+  render(){
+    return(
+      <div >
+        {this.update}
+      </div>
+
+    )
   }
 }

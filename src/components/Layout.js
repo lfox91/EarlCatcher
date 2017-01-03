@@ -7,7 +7,10 @@ export default class Layout extends React.Component {
     super(props);
     this.updateURL= this.updateURL.bind(this);
     this.onCatch= this.onCatch.bind(this);
-    this.state = {url:""}
+    this.state = {
+      url:"",
+      postedURL: false
+                  }
     this.url;
   }
   updateURL(e){
@@ -17,8 +20,6 @@ export default class Layout extends React.Component {
     this.setState({
       url: this.url
     });
-
-
   }
 
   render(){

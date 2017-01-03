@@ -15,18 +15,27 @@ export default class Catch extends React.Component{
   componentDidMount() {
     //Asynchronous code!
     //After component is written to DOM post url to our server
-    let that =this;
-    let url = this.cleanURL(this.props.url)//make this happen sooer
+    let that = this;
+    let url = this.cleanURL(this.props.url)//make this happen sooner
     request.post('http://localhost:3000/catch', {form: {url:url}},
       function (err, res, body){
         if(err)console.log(err);
         // If there is no error we change our location to /graph
         else{
           body = JSON.parse(body);
+          let seaver = "http://seaver.pepperdine.edu"
           that.links = body.links;
-          that.links = body.links.map((link, i) =>
-            <li key={i.toString()}>{link}</li>
-          );
+          that.links = body.links.map((linkObj, i) => {
+            if (linkObj.href[0]=='/'){
+               linkObj.href = seaver + linkObj.href;
+            }
+            return(
+              <li key={i.toString()}>
+                <a href={linkObj.href}>{linkObj.text}</a>
+                {/*onclick modal of page with notes beside it*/}
+              </li>
+            )
+          });
           that.setState({
             postedURL: true
           });
@@ -37,7 +46,9 @@ export default class Catch extends React.Component{
   waitingMessage(){
     return(
       <div>
-        {/*Should display while waiting for response from server*/}
+        {/*Should display while waiting for response from server
+          Possible Earl Catcher game while loading
+         */}
         <p>Generating your graph...</p>
         <p><em>This may take a while</em></p>
         Generating Graph for { this.cleanURL(this.props.url) }

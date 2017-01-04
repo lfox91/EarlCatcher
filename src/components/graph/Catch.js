@@ -11,37 +11,45 @@ export default class Catch extends React.Component{
     this.graph = this.graph.bind(this);
     this.links;
     this.update;
+    this.getProm = [];
   }
   componentDidMount() {
     //Asynchronous code!
     //After component is written to DOM post url to our server
+
+
+  }
+   recursiveGet(url){
+    let seaver = "http://seaver.pepperdine.edu"
     let that = this;
     let url = this.cleanURL(this.props.url)//make this happen sooner
-    request.post('http://localhost:3000/catch', {form: {url:url}},
-      function (err, res, body){
-        if(err)console.log(err);
-        // If there is no error we change our location to /graph
-        else{
-          body = JSON.parse(body);
-          let seaver = "http://seaver.pepperdine.edu"
-          that.links = body.links;
-          that.links = body.links.map((linkObj, i) => {
-            if (linkObj.href[0]=='/'){
-               linkObj.href = seaver + linkObj.href;
-            }
-            return(
-              <li key={i.toString()}>
-                <a href={linkObj.href}>{linkObj.text}</a>
-                {/*onclick modal of page with notes beside it*/}
-              </li>
-            )
-          });
-          that.setState({
-            postedURL: true
-          });
-        }
+    while(!allLinks.url){
+      request.post('http://localhost:3000/catch', {form: {url:url}},
+        function (err, res, body){
+          if(err)console.log(err);
+          // If there is no error we change our location to /graph
+          else{
+            body = JSON.parse(body);
 
-    });
+            that.links = body.links;
+            that.links = body.links.map((linkObj, i) => {
+              if (linkObj.href[0]=='/'){
+                 linkObj.href = seaver + linkObj.href;
+              }
+
+              return(
+                <li key={i.toString()}>
+                  <a href={linkObj.href}>{linkObj.text}</a>
+                  {/*onclick modal of page with notes beside it*/}
+                </li>
+              )
+            });
+            this.setState({
+              postedURL: true
+            });
+          }
+      });
+    }
   }
   waitingMessage(){
     return(
@@ -66,7 +74,7 @@ export default class Catch extends React.Component{
     )
   }
   componentWillUpdate(nextProps, nextState) {
-    if(this.props.postedUrl){
+    if(!this.props.postedUrl){
       this.update = this.waitingMessage();
     } else {
       this.update = this.graph();

@@ -7,10 +7,7 @@ export default class Layout extends React.Component {
     super(props);
     this.updateURL= this.updateURL.bind(this);
     this.onCatch= this.onCatch.bind(this);
-    this.state = {
-      url:"",
-      postedURL: false
-                  }
+    this.state = {url:"",postedURL: false, allLinks: {}}
     this.url;
   }
   updateURL(e){
@@ -32,7 +29,7 @@ export default class Layout extends React.Component {
         </header>
         <hr/>
         <div className="app-content">
-           { React.cloneElement( this.props.children, {updateURL: this.updateURL, onCatch: this.onCatch, url: this.state.url}) }
+           { React.cloneElement( this.props.children, {updateURL: this.updateURL, onCatch: this.onCatch, url: this.state.url, allLinks: this.state.allLinks}) }
         </div>
         <footer>
           <small>copyright &copy; 2016 | By Leaf</small>

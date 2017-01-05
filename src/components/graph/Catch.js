@@ -22,7 +22,7 @@ export default class Catch extends React.Component{
    recursiveGet(url){
     let seaver = "http://seaver.pepperdine.edu"
     let that = this;
-    let url = this.cleanURL(this.props.url)//make this happen sooner
+    var url = this.cleanURL(this.props.url)//make this happen sooner
     while(!allLinks.url){
       request.post('http://localhost:3000/catch', {form: {url:url}},
         function (err, res, body){

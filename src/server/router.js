@@ -9,7 +9,8 @@ import routes from '../routes';
 import NotFoundPage from '../components/Oops';
 import cheerio from 'cheerio';
 import request from 'request';
-import Url from 'models/URL';
+import Url from './models/URL';
+
 const router = express.Router();
 
 router.post('/catch', function(req, res)  {

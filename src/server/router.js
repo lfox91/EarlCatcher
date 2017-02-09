@@ -14,9 +14,9 @@ import Url from './models/URL';
 const router = express.Router();
 
 router.post('/catch', function(req, res)  {
-  var links = [];
 
-
+  console.log("hello??");
+  res.send([{href:'www.google.com', text:"Google"}, {href:'www.foogle.com', text:"Foogle"}]);
 });
 router.get('*', (req, res) => {
   debug(process.env.NODE_ENV);
@@ -38,14 +38,17 @@ router.get('*', (req, res) => {
       let markup;
       if (renderProps) {
         // if the current route matched we have renderProps
-        if(renderProps.routes.path == 'caught'){
-          console.log(JSON.stringify(renderProps, null, 2))
+        console.log(renderProps.location.pathname);
+        console.log(RouterContext);
+        if(renderProps.location.pathname == 'catch'){
+          console.log("CAUGHT ----------------------------------------------", JSON.stringify(renderProps, null, 2))
+        } else {
+          console.log("\n\n**************************************\n %s \n******************************************\n\n", JSON.stringify(renderProps, null, 1));
         }
-        console.log("**************************************\n %s ******************************************\n", JSON.stringify(renderProps, null, 2));
         markup = renderToString(<RouterContext {...renderProps}/>);
       } else {
         // otherwise we can render a 404 page
-        markup = renderToString(<Oops/>);
+        markup = renderToString(<NotFoundPage/>);
         res.status(404);
       }
 

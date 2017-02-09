@@ -9,15 +9,14 @@ export default class Home extends React.Component {
   }
   immitateLinkAction(e){
     e.preventDefault();
-    this.props.onCatch();
     browserHistory.push('catch');
   }
 
   render(){
     return(
       <div>
-        <form onSubmit={this.immitateLinkAction.bind(this)}>
-          <input onChange={this.props.updateURL} type="text"/>
+        <form onSubmit={this.immitateLinkAction.bind(this)} autoComplete>
+          <input onChange={this.props.updateURL} type="text" />
           <br/>
           <label>Enter your URL</label>
         </form>

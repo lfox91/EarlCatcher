@@ -20,7 +20,7 @@ class Node {
 class Graph {
   constructor(name){
     this.nodes = {};
-    this.name = name
+    this.name = name;
   }
   addNode(name, props){
     this.nodes[name] = new Node(name, props);
@@ -44,69 +44,82 @@ class URL extends Graph {
   //Need to track eachLink visited
   add(name, props){
     this.addNode(name, props);
+    this.visited[name] = true;
   }
   addLink(name, end){
-    // console.log("Add Edge", this.addEdge);
-    this.addEdge(name, end);
+  //  console.log("Add Edge", this.addEdge);
+    this.addEdge(name, end)
     // console.log(this.nodes[name].edges);
   }
-  getLinks(url){
-    //req.body.url
-    var that = this;
-    return new Promise(function(resolve, reject) {
-      request.get(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          let $ = cheerio.load(body);
+  getLinks(url, text, href){
+    var promises = [];  //req.body.url
+    let linkPromise = new Promise((resolve, reject) => {
 
+      if(this.visited[url] || !url || url[0] !== '/' && url !== this.name ) {
+        // console.log("BREAK RECURSION", url);
+        return;
+      } else{
 
-          /* $('a').each(function(i, el){});*/
-          var len = $('a').length
-          console.log(len);
+        request.get(url, (error, response, body) => {
+          if (!error && response.statusCode == 200) {
+            let $ = cheerio.load(body);
 
-          for( var i = 0; i<len; i++){
-            var el = $('a').eq(i);
-            var href =  el.attr('href');
-            console.log(href, that.visited)
-            if(!href || href[0] !== '/' )continue;
-            href = "http://seaver.pepperdine.edu" + href;
-            var info = {text: el.text(), href: href };
-            console.log("visited check", that.visited[info.href]);
-            if(!that.visited[info.href]){
-              console.log(`${i}: ${info.href}`);
-              that.visited[info.href] =  true;
-              that.add(url, info);
-              that.addLink(url, info.href);
-              that.getLinks(info.href);
-            } else {
-              break;
+            /* $('a').each(function(i, el){});*/
+            var len = $('a').length
+            // console.log("LENGTH:   "+len);
+            if(!this.visited[this.name]){
+              this.add(this.name);
             }
-          }
+            console.log(url, this.visited[url]);
+            for( var i = 0; i<len; i++){
+              var el = $('a').eq(i);
+              var href =  el.attr('href');
+              // console.log(i, href);
+              if(!href || href[0] !== '/' )continue;
+              href = "http://seaver.pepperdine.edu" + href;
+              var info = {text: el.text(), href: href };
 
-          if(that.nodes){
-            resolve("Success");
-          }
-          else {
-            reject("There is no response. Check request URL");
-          }
+              if(!this.visited[info.href] && info.href !== this.name){
 
-        }
-      })
+                // console.log("visited check",href, this.visited[info.href]);
+                // console.log(`${i}: ${info.href}`);
+                this.add(info.href, [info.text, info.href])
+
+                ++this.count;
+
+                this.addLink(url, info.href);
+
+                console.log(info.href);
+                this.getLinks(info.href)
+
+                // console.log(this.nodes[info.href]);
+
+              }
+            }
+              resolve(this);
+          } else {
+            reject(error);
+          }
+        })
+      }
     })
+    promises.push(linkPromise.bind(this));
+    return Promise.all(promises);
   }
   generateGraph(url){
     // should run after root has been added  - might change that?
 
     this.getLinks(url).then(function(result){
       //This should be the completed graph of site
-      console.log(result, that);
-    }, function(err){throw(err)})
+      console.log(JSON.stringify(result, null, 1));
+    }, function(err){throw(err)}).bind(this);
   }
 }
 
 
 var root = new URL("http://seaver.pepperdine.edu");
 root.generateGraph("http://seaver.pepperdine.edu");
-
+// console.log("Line 109", root)
 
 module.exports = URL;
 

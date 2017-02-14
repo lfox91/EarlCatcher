@@ -5,11 +5,10 @@ var Promise = require("bluebird");
 class LinkNode {
   constructor(name, edges, ...props){
     this.edges = new Set(edges);
-    this.name = name;
+    this.called = name;
     this.props = props;
   }
   addEdge(end){
-    // should not add url's that have been visited
     this.edges.add(end);
   }
   removeEdge(end){
@@ -18,71 +17,72 @@ class LinkNode {
 }
 
 class Graph {
-  constructor(name){
+  constructor(root){
     this.nodes = {};
-    this.name = name;
+    this.root = root;
   }
-  addNode(name,edges, props){
-    this.nodes[name] = new LinkNode(name,edges, props);
+  addNode(root,edges, props){
+    this.nodes[root] = new LinkNode(root,edges, props);
+    //console.log("Graph Constructor", this.nodes[root]);
   }
-  addEdge(name, end){
-    // console.log("In addEdge: ", this.nodes[name]);
-    this.nodes[name].addEdge(end);
+  addEdge(root, end){
+    this.nodes[root].addEdge(end);
   }
-  removeNode(name){
-    delete this.nodes.name;
+  removeNode(root){
+    delete this.nodes[root];
   }
 }
 
 class URL extends Graph {
   constructor(root){
     super(root)
-    this.root = root;
     this.visited = {};
     this.count = 0;
   }
-  //Need to track eachLink visited
+
   add(name, edges, props){
     this.addNode(name, edges, props);
     this.visited[name] = true;
+    ++this.count;
+    console.log(this.count, name);
+    if(this.count>2183){ throw new Error("YOUR GONNA BREAK SOMETHING OVER 2183!!!")}
   }
 
   getLinks(root, props){ // props = text, href
     var that = this;
-    if(that.visited[root] != true && (root.length ||  that.root == root)){
-      root =  typeof root == 'string'? root : that.root + $(root).attr('href');
+    if(that.visited[root] !== true && root.length){
+      // && root[0] == '/' || that.root == root
       let options = {
         uri: root,
         transform: function (body) {
             return cheerio.load(body);
         }
       }
-      rp(options)
+       rp(options)
         .then(($)=>{
-          var anchorArr = [];
           var tempEdges = [];
-
           $('a').each((i, el) => {
-            tempEdges[i] = el.text;
-            anchorArr[i] = el; // ccheck iinput
+            let href = $(el).attr('href');
+            if(href) tempEdges[i] = href;
           });
-          that.add(root, anchorArr, props);
-          ++that.count;
-          console.log(that.count, root);
-          that.nodes[root].edges.forEach(function(anchorObj){
-            var href = that.root + $(anchorObj).attr('href');
-            if(!this.visited[href]){
-              return that.getLinks(href,[anchorObj.text, href]);
+          that.add(root, tempEdges, props);
+
+          that.nodes[root].edges.forEach(function(uri){
+            if(that.visited[that.root+uri] !== true && uri[0] == "/"){
+              setTimeout(that.getLinks, 5000, that.root+uri,["text placeholder", uri]);
+              return that;
             }
           })
+        }).then((url)=>{
+          console.log(url);
+        }, (err)=>{
+          console.error(err);
         })
         .catch((err) => {
-          //console.log(err);
+          console.error(err);
           that.add(root, [err]);
         })
-        return that;
     }
-
   }
 
   // static scrapeForLinks(){
@@ -100,9 +100,7 @@ class URL extends Graph {
 
 
 var root = new URL("http://seaver.pepperdine.edu");
- root.getLinks(root.root);
-// console.log("Line 109", root)
-
+var seaver = root.getLinks(root.root);
 module.exports = URL;
 
 

@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www  --exec babel-node --presets latest react"
+    "start": "nodemon ./bin/www  --exec babel-node --presets latest react",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "bluebird": "^3.4.7",
@@ -25,7 +27,8 @@
     "redux-thunk": "^2.1.0",
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "snyk": "^1.192.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -44,5 +47,6 @@
       "latest",
       "react"
     ]
-  }
+  },
+  "snyk": true
 }
